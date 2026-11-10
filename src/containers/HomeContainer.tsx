@@ -221,8 +221,17 @@ class HomeContainer extends React.Component<Props, InternalState> {
           close={this.closeErrorModal}
         />
 
-        <Card.Header className="text-center bg-dark text-white py-4">
+        <Card.Header className="text-center bg-dark text-white py-4 palehorse-hero">
+          <img
+            src="palehorse-emblem.png"
+            alt=""
+            className="palehorse-hero-emblem"
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+          />
           <h1 className="font-weight-bold mb-0">PALE HORSE BARBELL</h1>
+          <div className="palehorse-hero-subtitle">COMPETITION MANAGEMENT</div>
         </Card.Header>
 
         <Card.Body>
