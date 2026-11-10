@@ -16,7 +16,7 @@ from pydantic import BaseModel, Field, field_validator
 
 DATABASE_URL = os.environ["DATABASE_URL"]
 API_KEY = os.environ["PALEHORSE_API_KEY"]
-if len(API_KEY) < 24 or API_KEY.lower() in {"changeme", "change-me", "dev"}:
+if len(API_KEY) < 24 or API_KEY.lower() in {"changeme", "change-me", "dev"} or API_KEY.startswith("REPLACE_"):
     raise RuntimeError("PALEHORSE_API_KEY must be a unique secret with at least 24 characters")
 
 DDL = """
