@@ -1,0 +1,41 @@
+name: Verify Pale Horse backend and frontend
+
+on:
+  push:
+    branches:
+      - feature/pale-horse-foundation
+  pull_request:
+
+jobs:
+  container-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create ephemeral test secrets
+        run: |
+          cat > .env.backend <<EOF
+          POSTGRES_USER=palehorse
+          POSTGRES_DB=palehorse
+          POSTGRES_PASSWORD=$(openssl rand -hex 32)
+          PALEHORSE_API_KEY=$(openssl rand -hex 32)
+          EOF
+      - name: Docker Compose build and start
+        run: docker compose --env-file .env.backend up -d --build
+      - name: Verify API response and conflict semantics
+        run: |
+          set -e
+          for i in $(seq 1 30); do
+            if curl -fsS http://127.0.0.1:8085/api/health; then break; fi
+            sleep 2
+          done
+          set -a
+          . ./.env.backend
+          set +a
+          python3 scripts/test-cloud-api.py
+      - name: Show logs on failure
+        if: failure()
+        run: docker compose --env-file .env.backend logs --tail=150
+      - name: Shut down without deleting volumes
+        if: always()
+        run: docker compose --env-file .env.backend down
