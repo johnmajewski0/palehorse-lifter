@@ -32,7 +32,9 @@ const Navigation = () => {
   return (
     <Navbar sticky="top" bg="dark" variant="dark" expand="lg">
       <Navbar.Brand>
-        <span>Pale Horse <strong>Barbell</strong></span>
+        <span>
+          Pale Horse <strong>Barbell</strong>
+        </span>
       </Navbar.Brand>
 
       {/* Navbar uses Toggle and Collapse to automatically create a hamburger menu
