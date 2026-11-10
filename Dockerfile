@@ -4,6 +4,9 @@ WORKDIR /app
 RUN corepack enable && corepack prepare yarn@1.22.22 --activate
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --non-interactive
+# CRA 5's fork-ts-checker is incompatible with the fork's TypeScript 5.x.
+# Pin the compiler to the last supported TypeScript 4.9 release for this build.
+RUN yarn add --dev --exact typescript@4.9.5 --non-interactive
 COPY . .
 # Windows Git checkouts can use CRLF. Normalize source files inside Linux
 # before ESLint/Prettier runs; no application logic is modified.
