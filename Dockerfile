@@ -11,6 +11,7 @@ COPY . .
 # Windows Git checkouts can use CRLF. Normalize source files inside Linux
 # before ESLint/Prettier runs; no application logic is modified.
 RUN find src -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) -exec sed -i 's/\r$//' {} +
+RUN ./node_modules/.bin/prettier --write src/components/CloudSync.tsx src/App.tsx
 RUN yarn build
 
 # Stage 2: serve the generated single-page application
