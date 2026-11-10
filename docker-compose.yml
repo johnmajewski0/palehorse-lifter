@@ -1,0 +1,16 @@
+services:
+  lifter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: palehorse-lifter:local
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8085:80"
+    read_only: true
+    tmpfs:
+      - /var/cache/nginx
+      - /var/run
+      - /tmp
+    security_opt:
+      - no-new-privileges:true
