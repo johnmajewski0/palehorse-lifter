@@ -1,0 +1,5 @@
+FROM postgres:17-alpine
+COPY backup.sh /scripts/backup.sh
+# Normalize CRLF when checked out on Windows before BusyBox sh parses it.
+RUN sed -i 's/\r$//' /scripts/backup.sh
+CMD ["sh", "/scripts/backup.sh"]
