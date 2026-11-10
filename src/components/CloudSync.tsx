@@ -7,6 +7,7 @@ import { overwriteStore } from "../actions/globalActions";
 interface MeetBackup {
   id: string;
   revision: number;
+  signature: string;
 }
 
 const ACTIVE_KEY = "palehorse-cloud-meet";
@@ -48,6 +49,10 @@ const CloudSync = () => {
     return state.meet && state.meet.name ? state.meet.name.trim() : "";
   };
 
+  const signatureOf = (state: any): string => {
+    return JSON.stringify([state.meet && state.meet.name, state.meet && state.meet.date]);
+  };
+
   const disconnect = () => {
     setEnabled(false);
     setConflict(false);
@@ -64,7 +69,14 @@ const CloudSync = () => {
       return;
     }
     sessionStorage.setItem(KEY_SESSION, apiKey.trim());
-    const selected = active || { id: randomId(), revision: 0 };
+    const signature = signatureOf(store.getState());
+    if (active && active.signature && active.signature !== signature) {
+      setStatus("This is a different meet. Choose New cloud record before enabling sync.");
+      return;
+    }
+    const selected = active
+      ? { ...active, signature: signature }
+      : { id: randomId(), revision: 0, signature: signature };
     localStorage.setItem(ACTIVE_KEY, JSON.stringify(selected));
     setActive(selected);
     lastSent.current = "";
@@ -99,7 +111,11 @@ const CloudSync = () => {
       if (!server.snapshot || !server.snapshot.meet || !server.snapshot.versions) {
         throw new Error("Invalid meet data received");
       }
-      const selected = { id: server.id, revision: server.current_revision };
+      const selected = {
+        id: server.id,
+        revision: server.current_revision,
+        signature: signatureOf(server.snapshot),
+      };
       localStorage.setItem(ACTIVE_KEY, JSON.stringify(selected));
       setActive(selected);
       lastSent.current = JSON.stringify(server.snapshot);
@@ -124,6 +140,11 @@ const CloudSync = () => {
         return;
       }
       const payload = snapshotOf(store.getState());
+      if (active.signature !== signatureOf(payload)) {
+        setStatus("Meet identity changed. Cloud writes paused; create a new cloud record or recover the original meet.");
+        setConflict(true);
+        return;
+      }
       if (!payload.meet || !payload.meet.name || !payload.meet.name.trim()) {
         return;
       }
@@ -150,7 +171,7 @@ const CloudSync = () => {
           throw new Error("HTTP " + response.status);
         }
         const result = await response.json();
-        const next = { id: active.id, revision: result.revision };
+        const next = { ...active, revision: result.revision };
         localStorage.setItem(ACTIVE_KEY, JSON.stringify(next));
         lastSent.current = body;
         setActive(next);
@@ -170,7 +191,7 @@ const CloudSync = () => {
     if (!window.confirm("Create a new cloud record for the CURRENT browser meet? Existing server records are preserved.")) {
       return;
     }
-    const record = { id: randomId(), revision: 0 };
+    const record = { id: randomId(), revision: 0, signature: signatureOf(store.getState()) };
     localStorage.setItem(ACTIVE_KEY, JSON.stringify(record));
     setActive(record);
     lastSent.current = "";
