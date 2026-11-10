@@ -47,3 +47,7 @@ yarn-error.log*
 geckodriver.log
 *.retry
 .DS_Store
+
+# Pale Horse server secrets and local runtime data.
+.env.backend
+*.dump
