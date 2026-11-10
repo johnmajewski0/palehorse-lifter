@@ -34,3 +34,13 @@ if (rootElement !== null) {
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+// Cache the production app shell for offline reloads. The server API is
+// explicitly excluded from caching; Redux Persist holds local meet state.
+if (process.env.NODE_ENV === "production" && "serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {
+      // Offline shell caching is best-effort; local state remains available.
+    });
+  });
+}
