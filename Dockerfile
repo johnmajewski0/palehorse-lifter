@@ -5,6 +5,9 @@ RUN corepack enable && corepack prepare yarn@1.22.22 --activate
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile --non-interactive
 COPY . .
+# Windows Git checkouts can use CRLF. Normalize source files inside Linux
+# before ESLint/Prettier runs; no application logic is modified.
+RUN find src -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.js' -o -name '*.jsx' \) -exec sed -i 's/\r$//' {} +
 RUN yarn build
 
 # Stage 2: serve the generated single-page application
