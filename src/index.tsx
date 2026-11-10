@@ -19,7 +19,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import * as serviceWorker from "./serviceWorker";
 import App from "./App";
 
 import "./bootstrap-custom/bootstrap.scss";
@@ -29,11 +28,6 @@ const rootElement = document.getElementById("root");
 if (rootElement !== null) {
   ReactDOM.render(<App />, rootElement);
 }
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-serviceWorker.unregister();
 
 // Cache the production app shell for offline reloads. The server API is
 // explicitly excluded from caching; Redux Persist holds local meet state.
