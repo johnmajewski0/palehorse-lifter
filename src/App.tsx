@@ -33,6 +33,7 @@ import ResultsContainer from "./containers/ResultsContainer";
 import DebugContainer from "./containers/DebugContainer";
 import AboutContainer from "./containers/AboutContainer";
 import Navigation from "./components/Navigation";
+import CloudSync from "./components/CloudSync";
 
 import configureStore from "./store";
 
@@ -56,6 +57,7 @@ class App extends React.Component {
             <BrowserRouter basename={process.env.REACT_APP_ROUTER_BASENAME}>
               <div>
                 <Navigation />
+                <CloudSync />
                 <Routes>
                   <Route path="/" element={<RootContainer />} />
                   <Route path="/meet-setup" element={<MeetSetupContainer />} />

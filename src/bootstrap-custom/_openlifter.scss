@@ -11,17 +11,17 @@ $font-size-navbar: 0.875rem;
 $enable-validation-icons: false;
 
 // Configuration of the color system.
-$body-bg: #dfe4e6; // A darker white (~87%) to make the foreground pop.
+$body-bg: #c7c7c7; // Pale Horse medium-dark neutral gray.
 
 // Buttons and highlights and such.
-$primary: #007bff; // $blue.
-$secondary: #adb5bd; // $gray-500.
-$success: #28a745; // $green.
-$info: #5bc0de; // The info color from version 1.0 (using Bootstrap 3).
-$warning: #ffc107; // $yellow.
-$danger: #dc3545; // $red.
+$primary: #171717; // $blue.
+$secondary: #626262; // $gray-500.
+$success: #393939; // $green.
+$info: #565656; // The info color from version 1.0 (using Bootstrap 3).
+$warning: #b6b6b6; // $yellow.
+$danger: #161616; // $red.
 $light: #f8f9fa; // $gray-100.
-$dark: #343a40; // $gray-800.
+$dark: #050505; // $gray-800.
 
 // Bootstrap button logic determines the text color from the background color
 // by deciding whether the background is "light" or "dark". We want it to always
@@ -72,4 +72,31 @@ a.nav-link {
 }
 a.nav-link.active {
   font-weight: bold;
+}
+
+// Pale Horse Barbell visual identity. Preserve native status labels and logic.
+.navbar { border-bottom: 2px solid #fff; }
+.navbar-brand { font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+a.nav-link.active { border-bottom: 2px solid #fff; }
+.btn-primary { text-transform: uppercase; letter-spacing: .035em; font-weight: 650; }
+:focus-visible { outline: 3px solid #555; outline-offset: 2px; }
+
+/* Pale Horse home hero: logo is optional until the PNG asset is installed. */
+.palehorse-hero { background-color: #050505 !important; }
+.palehorse-hero-emblem {
+  display: block;
+  width: min(45%, 240px);
+  height: auto;
+  margin: 0 auto 1rem;
+  background: #000;
+}
+.palehorse-hero h1 {
+  font-size: clamp(1.35rem, 3vw, 2.2rem);
+  letter-spacing: .08em;
+}
+.palehorse-hero-subtitle {
+  margin-top: .35rem;
+  color: #cfcfcf;
+  font-size: .8rem;
+  letter-spacing: .18em;
 }

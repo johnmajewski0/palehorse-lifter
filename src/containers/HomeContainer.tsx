@@ -37,7 +37,7 @@ import ErrorModal from "../components/ErrorModal";
 
 import { getString } from "../logic/strings";
 
-import { stateVersion, releaseVersion, releaseDate } from "../versions";
+import { stateVersion, releaseVersion } from "../versions";
 
 import styles from "../components/common/ContentArea.module.scss";
 
@@ -221,8 +221,17 @@ class HomeContainer extends React.Component<Props, InternalState> {
           close={this.closeErrorModal}
         />
 
-        <Card.Header>
-          <img alt="OpenLifter" src="openlifter.svg" />
+        <Card.Header className="text-center bg-dark text-white py-4 palehorse-hero">
+          <img
+            src="palehorse-emblem.png"
+            alt=""
+            className="palehorse-hero-emblem"
+            onError={(event) => {
+              event.currentTarget.style.display = "none";
+            }}
+          />
+          <h1 className="font-weight-bold mb-0">PALE HORSE BARBELL</h1>
+          <div className="palehorse-hero-subtitle">COMPETITION MANAGEMENT</div>
         </Card.Header>
 
         <Card.Body>
@@ -293,17 +302,8 @@ class HomeContainer extends React.Component<Props, InternalState> {
           </Container>
         </Card.Body>
 
-        <Card.Footer>
-          <h4 style={{ textAlign: "center" }}>
-            <FormattedMessage
-              id="home.version-date"
-              defaultMessage="Version {releaseVersion}, {releaseDate}."
-              values={{
-                releaseVersion: releaseVersion,
-                releaseDate: releaseDate,
-              }}
-            />
-          </h4>
+        <Card.Footer className="text-center">
+          <h4 className="mb-0">Pale Horse v1.0</h4>
         </Card.Footer>
 
         <input
