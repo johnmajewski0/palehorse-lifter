@@ -46,7 +46,9 @@ services:
       - no-new-privileges:true
 
   backup:
-    image: postgres:17-alpine
+    build:
+      context: ./ops
+      dockerfile: Dockerfile.backup
     restart: unless-stopped
     env_file: .env.backend
     environment:
@@ -56,7 +58,6 @@ services:
         condition: service_healthy
     volumes:
       - pg_backups:/backups
-      - ./ops/backup.sh:/scripts/backup.sh:ro
     command: ["sh", "/scripts/backup.sh"]
     security_opt:
       - no-new-privileges:true
